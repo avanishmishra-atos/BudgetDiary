@@ -1,0 +1,119 @@
+<simple-notifications [options]="options"></simple-notifications>
+<div class="overlay" *ngIf="loading">
+    <div class="overlay-loader" *ngIf="loading"></div>
+</div>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header welcomeRow">
+            <button type="button" class="navbar-toggle collapsed" (click)="toggleResponsiveNavMenuState()">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="#" class="navbar-brand">{{title}}</a>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <div class="starter-template">
+        <div class="content">
+            <table class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                <tr>
+                    <th>Paid By</th>
+                    <th>Paid To</th>
+                    <th>Expense Type</th>
+                    <th>Amount</th>
+                    <th>Paid Date</th>
+                    <th>Remarks</th>
+                    <th></th>
+                </tr>
+
+                <tr>
+                    <td>
+                        <select [(ngModel)]='budget.paidBy'>
+                            <option [ngValue]="undefined" disabled>Select Payer</option>
+                            <option *ngFor="let user of usersList" [ngValue]="user.value" [selected]="user.value === 'Manish'">
+                                {{ user.value }}
+                            </option>
+                            <i class="fa fa-caret-down"></i>
+                        </select>
+                    </td>
+                    <td>
+                        <select [(ngModel)]='budget.paidTo'>
+                            <option [ngValue]="undefined" disabled>Select Service</option>
+                            <option *ngFor="let service of servicesList" [ngValue]="service.value" [selected]="service.value === 'Rent'">
+                                {{ service.value }}
+                            </option>
+                            <i class="fa fa-caret-down"></i>
+                        </select>
+                    </td>
+                    <td>
+                        <select [(ngModel)]='budget.expenseType'>
+                            <option [ngValue]="undefined" disabled>Select Expense</option>
+                            <option *ngFor="let expenseType of expenseTypes" [ngValue]="expenseType" [selected]="expenseType === 'Debit'">
+                                {{ expenseType }}
+                            </option>
+                            <i class="fa fa-caret-down"></i>
+                        </select>
+                    </td>
+                    <td><input type="number" [placeholder]="0.0" [(ngModel)]="budget.amount"></td>
+                    <td>
+                        <input class="datePickerText" [disabled]="!(budget.amount > 0)" [placeholder]="budget.paidDate"
+                            [(ngModel)]="budget.paidDate" [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1">
+                        <owl-date-time #dt1></owl-date-time>
+                    </td>
+                    <td>
+                        <textarea rows="2" cols="25" [(ngModel)]="budget.remark"></textarea>
+                    </td>
+                    <td>
+                        <button class="button" type="submit" [disabled]="!(budget.amount > 0)" (click)="submit()">Save</button>
+                    </td>
+                </tr>
+
+                <ng-container *ngIf="budgetData && budgetData.length !== 0">
+                    <tr *ngFor="let budget of budgetData.slice().reverse()">
+                        <td>{{budget.paidBy}}</td>
+                        <td>{{budget.paidTo}}</td>
+                        <td>{{budget.expenseType}}</td>
+                        <td>{{budget.amount  | number}}</td>
+                        <td>{{budget.paidDate | date:'dd/MM/yyyy'}}</td>
+                        <td>{{budget.remark}}</td>
+                        <td></td>
+                    </tr>
+                </ng-container>
+
+                <tr>
+                    <td>
+                        <label class="label">Total Credit</label>
+                    </td>
+                    <td>
+                        <label class="label">{{creditAmount | number}}</label>
+                    </td>
+                    <td>
+
+                    <td>
+                        <label class="label">Total Debit</label>
+                    </td>
+                    <td>
+                        <label class="label">{{debitAmount | number}}</label>
+                    </td>
+
+                    <td>
+                        <label class="label">Balance</label>
+                    </td>
+                    <td>
+                        <label class="label">{{creditAmount - debitAmount | number}}</label>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="footer bgd-alpha">
+            <div class="row">
+                <div class="col-md-12 padding-top-10">
+                    <h4 class="clr-epsilon">&copy; Copyright IUnknown 2019: All Rights Reserved</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
